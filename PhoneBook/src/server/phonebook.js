@@ -41,12 +41,24 @@ app.post("/contacts", (req, res) => {
         res.status(500).send("Error inserting contact into database");
         return;
       }
-      console.log(
-        "Contact inserted into database with id " + result.PhoneNumber
-      );
-      res.send("Contact inserted into database with id " + result.PhoneNumber);
+      console.log("Contact inserted into database with id " + result.insertId);
+      res.send("Contact inserted into database with id " + result.insertId);
     }
   );
+});
+
+app.get("/getContacts", (req, res) => {
+  const sql = `SELECT * FROM contacts`;
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.error("Error selecting contacts from database: " + err.stack);
+      res.status(500).send("Error selecting contacts from database");
+      return;
+    }
+    console.log("Contact selected from database succesfully ");
+    res.send(JSON.stringify(result));
+    //result.setHeader("Content-Type", "application/json");
+  });
 });
 
 app.listen(3000, () => {

@@ -7,10 +7,6 @@ import { Component } from '@angular/core';
 })
 export class ContactsDetailsComponent {
      getContactsList(){
-      var gridSection = document.getElementById("contact-container");
-      gridSection? gridSection.style.display = "none":'';
-
-
      fetch('http://localhost:3000/getContacts',{
         method: "get",
         headers: {
@@ -19,7 +15,10 @@ export class ContactsDetailsComponent {
       })
   .then(response => response.json())
   .then((data) => {
-const table = document.getElementById("contact-table") as HTMLTableElement;
+    const listSection=document.getElementById("listSection")as HTMLElement;;
+    listSection.style.display="block";
+    const container = document.getElementById("contact-container") as HTMLElement; 
+    container.style.display="none";
 // Loop through each contact object in the array
 for (let i = 0; i < data.length; i++) {
   const contact = data[i];
@@ -62,12 +61,7 @@ for (let i = 0; i < data.length; i++) {
   row.appendChild(addressCell);
 
   // Append the row element to the table element
-  table.appendChild(row);
-  
-  var listSection = document.getElementById("listSection");
-  listSection? listSection.style.display = "true":'';
-
-
+  listSection.appendChild(row);
  }
 })
   .catch(error => {
@@ -78,9 +72,6 @@ for (let i = 0; i < data.length; i++) {
 
 
   displayContactsGrid(){
-    
-    var listSection = document.getElementById("listSection");
-    listSection? listSection.style.display = "none":'';
 
       fetch('http://localhost:3000/getContacts',{
         method: "get",
@@ -90,9 +81,12 @@ for (let i = 0; i < data.length; i++) {
       })
   .then(response => response.json())
   .then((data) => {
-    console.log(data);
   //display contacts as cards
- const container = document.getElementById("contact-container");
+ const container = document.getElementById("contact-container") as HTMLElement;
+ container.style.display="block"; 
+const listSection = document.getElementById("listSection") as HTMLTableElement;
+ listSection.style.display="none";
+      
 let  contactCard='';
 data.forEach((contact: {
   Email: any;
@@ -114,9 +108,6 @@ data.forEach((contact: {
                     </div>`});
 // Append each card element to the container element in the DOM
 if(container)container.innerHTML=contactCard;
-
-var gridSection = document.getElementById("contact-container");
-gridSection? gridSection.style.display = "true":'';
 }).catch(error => {
     console.error('Error fetching data:', error);
   });
@@ -124,6 +115,12 @@ gridSection? gridSection.style.display = "true":'';
 
 
  searchContact() {
+  const table = document.getElementById("listSection") as HTMLTableElement;
+  table.style.display="none";
+  
+ const container = document.getElementById("contact-container") as HTMLElement;
+ container.style.display="none"; 
+
   const searchInputValue = document.getElementById("searchContactInput") as HTMLInputElement;
   if (searchInputValue) {
     const phoneNumber =  searchInputValue.value
@@ -135,6 +132,55 @@ gridSection? gridSection.style.display = "true":'';
       .then(response => response.json())
       .then((data) => {
         console.log('Response:', data);
+const searchResultsSection=document.getElementById("searchResultsSection");
+searchResultsSection? searchResultsSection.style.display="block":"";
+const searchResultsTable = document.getElementById("searchResultsTable") as HTMLTableElement;
+searchResultsTable.innerHTML='';
+// Loop through each contact object in the array
+for (let i = 0; i < data.length; i++) {
+  const contact = data[i];
+
+  // Create a new row element for the contact
+  const row = document.createElement("tr");
+
+ // Create a new checkbox element and set its type to "checkbox"
+ const checkbox = document.createElement("input");
+ checkbox.type = "checkbox";
+
+ // Append the checkbox to the select cell
+ 
+
+  const firstNameCell = document.createElement("td");
+  firstNameCell.textContent = contact.FirstName;
+
+  const lastNameCell = document.createElement("td");
+  lastNameCell.textContent = contact.LastName;
+
+  const emailCell = document.createElement("td");
+  emailCell.textContent = contact.Email;
+
+  const phoneCell = document.createElement("td");
+  phoneCell.textContent = contact.PhoneNumber.toString();
+
+  const imageCell = document.createElement("td");
+  imageCell.textContent = contact.ContactImage;
+
+  const addressCell = document.createElement("td");
+  addressCell.textContent = contact.PhysicalAddress;
+
+  // Append the cells to the row element
+  row.appendChild(checkbox);
+  row.appendChild(firstNameCell);
+  row.appendChild(lastNameCell);
+  row.appendChild(emailCell);
+  row.appendChild(phoneCell);
+  row.appendChild(imageCell);
+  row.appendChild(addressCell);
+
+  // Append the row element to the table element
+  
+  searchResultsTable.appendChild(row);
+}
       })
       .catch(error => {
         console.error('Error:', error);

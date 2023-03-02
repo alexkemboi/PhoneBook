@@ -1,3 +1,60 @@
+
+##Phonebook App
+This is a simple phonebook app built with Angular, MySQL, and Node.js. The app allows users to view, add, edit, and delete contacts in a phonebook.
+Getting started
+
+#To get started with the app, follow these instructions:
+##Prerequisites
+
+    Node.js and npm installed on your machine
+    Angular CLI installed globally (npm install -g @angular/cli)
+    XAMPP or a similar server environment installed on your machine
+
+##Installation
+
+    Clone the repository:
+
+#bash
+
+git clone https://github.com/alexkemboi/PhoneBook.git
+
+    Navigate to the project directory:
+
+#bash
+
+cd PhoneBook
+
+    Install the dependencies:
+
+npm install
+
+##Set up the database
+
+    Install XAMPP or a similar server environment on your machine.
+    Start Apache and MySQL servers.
+    Import the phonebook.sql database file located in the assets folder of the project into your MySQL server.
+
+##Running the app
+
+    Start the Node.js server:
+
+##node phonebook.js
+
+    Start the Angular app:
+
+ng serve
+
+    Open your browser and navigate to http://localhost:4200 to access the app.
+
+##Usage
+
+The app allows you to view, add, edit, and delete contacts in a phonebook. To use the app, simply navigate to the homepage and click on the appropriate buttons to perform these actions.
+
+
+This app was built by Alex Kmeboi as a project for Interview.
+
+
+
 # PhoneBook
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.0.

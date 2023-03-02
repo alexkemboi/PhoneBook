@@ -1,5 +1,9 @@
 <div class="card container">
-  <div class="card-header"><h4 class="card-title">Add contact</h4></div>
+  <div class="card-header">
+    <i class="fas fa-plus fa-2x"></i>
+    <h4 class="card-title">Add contact</h4>
+    <div id="addContactMessage" class="text-center text-success"></div>
+  </div>
   <div class="card-body">
     <div class="row">
       <div class="col-6">
@@ -35,8 +39,12 @@
     </div>
   </div>
   <div class="card-footer">
-    <button class="bg-dark text-white form-control" (click)="addContact()">
-      Save
-    </button>
+    <div class="row">
+      <div class="col-3">
+        <button class="bg-dark text-white form-control" (click)="addContact()">
+          Save
+        </button>
+      </div>
+    </div>
   </div>
 </div>

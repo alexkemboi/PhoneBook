@@ -44,7 +44,7 @@ app.post("/contacts", (req, res) => {
         return;
       }
       console.log("Contact inserted into database with id " + result.insertId);
-      res.send("Contact inserted into database with id " + result.insertId);
+      res.send(result);
     }
   );
 });

@@ -2,7 +2,10 @@
   <div class="card container" id="contactSection">
     <div class="card-header">
       <div class="row">
-        <div class="col-3"><h4>Contacts</h4></div>
+        <div class="col-3">
+          <i class="fas fa-address-book fa-2x"></i>
+          <h4>Contacts</h4>
+        </div>
         <div class="col-3">
           <div class="row">
             <div class="col-3"><label>View</label></div>
@@ -33,7 +36,7 @@
     </div>
   </div>
   <div class="card-body container" id="listSection">
-    <table class="table">
+    <table class="table table-bordered table-striped table-hover">
       <thead>
         <th>Select</th>
         <th>First Name</th>
@@ -42,18 +45,28 @@
         <th>Phone Number</th>
         <th>Image</th>
         <th>Address</th>
+        <th>View</th>
+        <th>Edit</th>
+        <th>Delete</th>
       </thead>
-      <tbody id="contact-table"></tbody>
+      <tbody
+        id="contact-table"
+        class="table table-bordered table-striped table-hover"
+      ></tbody>
     </table>
   </div>
-  <div
-    id="contact-container"
-    class="row container m-auto"
-    style="display: true"
-  ></div>
+  <!--Display grid-->
+  <div class="container">
+    <div id="contact-container" class="row"></div>
+  </div>
+
   <!--Search results-->
-  <div class="card-body container" id="searchResultsSection">
-    <table class="table">
+  <div
+    class="card-body container"
+    id="searchResultsSection"
+    style="display: none"
+  >
+    <table class="table table-bordered table-striped table-hover">
       <thead>
         <th>Select</th>
         <th>First Name</th>
@@ -62,8 +75,14 @@
         <th>Phone Number</th>
         <th>Image</th>
         <th>Address</th>
+        <th>View</th>
+        <th>Edit</th>
+        <th>Delete</th>
       </thead>
-      <tbody id="searchResultsTable"></tbody>
+      <tbody
+        id="searchResultsTable"
+        class="table table-bordered table-striped table-hover"
+      ></tbody>
     </table>
   </div>
 </div>

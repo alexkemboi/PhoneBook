@@ -36,7 +36,13 @@ export class AddContactComponent {
     body: JSON.stringify(contactDetails)
   })
   .then(response => response.json())
-  .then(data => console.log(data))
+  .then((data) => {
+    console.log("Contact added succefully:"+data)
+    
+  const addContactMessage=document.getElementById("addContactMessage") as HTMLElement;
+  addContactMessage.innerHTML="Contact added succefully";
+  
+  })
   .catch(error => console.error(error));
 
 

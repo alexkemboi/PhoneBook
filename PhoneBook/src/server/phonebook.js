@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const mysql = require("mysql");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const db = mysql.createConnection({
@@ -10,7 +9,10 @@ const db = mysql.createConnection({
   password: "",
   database: "phonebook",
 });
+
+const bodyParser = require("body-parser");
 app.use(bodyParser.json());
+
 app.use(cors());
 db.connect((err) => {
   if (err) {
@@ -58,6 +60,23 @@ app.get("/getContacts", (req, res) => {
     console.log("Contact selected from database succesfully ");
     res.send(JSON.stringify(result));
     //result.setHeader("Content-Type", "application/json");
+  });
+});
+
+app.get("/searchContacts", (req, res) => {
+  const searchParams = req.query.phoneNumber;
+  const phoneNumber = searchParams;
+  console.log("Phone Number:", searchParams);
+  const query = `SELECT * FROM contacts WHERE PhoneNumber=${phoneNumber}`;
+  console.log("Query:", query);
+  db.query(query, (err, result) => {
+    if (err) {
+      console.error("Error selecting contacts from database: " + err.stack);
+      res.status(500).send("Error selecting contacts from database");
+      return;
+    }
+    console.log("Contact selected from database successfully:", result);
+    res.send(JSON.stringify(result));
   });
 });
 

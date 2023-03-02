@@ -1,13 +1,48 @@
-<div class="card">
+<div class="card container" id="contactSection">
   <div class="card-header">
     <div class="row">
-      <div class="col-6"><h4>Contacts</h4></div>
+      <div class="col-3"><h4>Contacts</h4></div>
+      <div class="col-3">
+        <div class="row">
+          <div class="col-3"><label>View</label></div>
+          <div class="col-9">
+            <select class="form-control">
+              <option (click)="getContactsList()">List</option>
+              <option (click)="displayContactsGrid()">Grid</option>
+            </select>
+          </div>
+        </div>
+      </div>
       <div class="col-6">
-        <select class="form-control">
-          <option>List</option>
-          <option>Grid</option>
-        </select>
+        <div class="row">
+          <div class="col-11">
+            <input
+              class="form-control"
+              type="text"
+              placeholder="search"
+              id="searchContactInput"
+            />
+          </div>
+          <div class="col-1">
+            <i class="fas fa-search fa-2x" (click)="searchContact()"></i>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+  <div class="card-body">
+    <table class="table" id="listSection">
+      <thead>
+        <th>Select</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>Image</th>
+        <th>Address</th>
+      </thead>
+      <tbody id="contact-table"></tbody>
+    </table>    
+  </div>
+  <div id="contact-container" class="row"></div>
 </div>

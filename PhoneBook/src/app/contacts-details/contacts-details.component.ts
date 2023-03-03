@@ -56,7 +56,7 @@ for (let i = 0; i < data.length; i++) {
   addressCell.textContent = contact.PhysicalAddress;
 
   const viewBtn = document.createElement("td");
-  viewBtn.innerHTML = `<button class="form-control btn-info">View</button>`;
+  viewBtn.innerHTML = `<button class="form-control btn-info" id="viewBtn" (click)="handleClick()">View</button>`;
 
   const deleteBtn = document.createElement("td");
   deleteBtn.innerHTML = `<button class="form-control btn-danger">delete</button>`;
@@ -198,13 +198,14 @@ for (let i = 0; i < data.length; i++) {
   addressCell.textContent = contact.PhysicalAddress;
 
   const viewBtn = document.createElement("td");
-  viewBtn.innerHTML = `<button class="form-control btn-info">View</button>`;
+  viewBtn.addEventListener("click", handleClick);
+  viewBtn.innerHTML = `<button class="form-control btn-info" id="viewBtn" >View</button>`;
 
   const deleteBtn = document.createElement("td");
-  deleteBtn.innerHTML = `<button class="form-control btn-danger">delete</button>`;
+  deleteBtn.innerHTML = `<button class="form-control btn-danger" id="deleteBtn">delete</button>`;
 
   const editBtn = document.createElement("td");
-  editBtn.innerHTML = `<button class="form-control btn-success">Edit</button>`;
+  editBtn.innerHTML = `<button class="form-control btn-success" id="editBtn">Edit</button>`;
 
   // Append the cells to the row element
   row.appendChild(checkbox);
@@ -221,28 +222,40 @@ for (let i = 0; i < data.length; i++) {
   // Append the row element to the table element
   
   searchResultsTable.appendChild(row);
-}
+ }
       })
       .catch(error => {
         console.error('Error:', error);
       });
-   };
-    
+   };   
  
-   
-  }
-
-
-  getValue(id: number) {
-    console.log('ID:', id);
-  }
-
-
-
-
 }
 
- 
+}
+function handleClick(this: HTMLButtonElement): void {
+  const row = this.closest("tr");
+  if (row) {
+    const cells = row.querySelectorAll("td");
+    const contact: (string | null)[]=[];
+    cells.forEach((cell: HTMLTableDataCellElement) =>contact.push(cell.textContent));
+    console.log(contact);
+    const modal = document.createElement("div");
+    modal.classList.add("modal");
+    modal.innerHTML = `
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <ul>
+          <li>contact</li>
+        </ul>
+      </div>
+    `;
+    const contactSection=document.getElementById("contactSection");
+    if (contactSection)contactSection.appendChild(modal);
 
+    // add event listener to close the modal when the close button is clicked
+    const closeBtn = modal.querySelector(".close");
+    closeBtn?.addEventListener("click", () => modal.remove());
     
+  }
+}
 

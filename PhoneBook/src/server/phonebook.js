@@ -80,6 +80,20 @@ app.get("/searchContacts", (req, res) => {
   });
 });
 
+app.delete('/delete', (req, res) => {
+  const phoneNumber = req.query.phoneNumber;
+
+  db.query(`DELETE FROM contacts WHERE phoneNumber = '${phoneNumber}'`, (error, results) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send('Error deleting contact');
+    } else {
+      res.status(204).send();
+    }
+  });
+});
+
+
 app.listen(3000, () => {
   console.log("Server started on port 3000");
 });

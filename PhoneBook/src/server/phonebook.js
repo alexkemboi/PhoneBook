@@ -80,19 +80,21 @@ app.get("/searchContacts", (req, res) => {
   });
 });
 
-app.delete('/delete', (req, res) => {
+// Handle DELETE request to /deleteContact
+app.delete("/deleteContact", (req, res) => {
   const phoneNumber = req.query.phoneNumber;
 
-  db.query(`DELETE FROM contacts WHERE phoneNumber = '${phoneNumber}'`, (error, results) => {
-    if (error) {
-      console.error(error);
-      res.status(500).send('Error deleting contact');
-    } else {
-      res.status(204).send();
+  // Delete contact from database
+  const sql = "DELETE FROM contacts WHERE PhoneNumber = ?";
+  db.query(sql, [phoneNumber], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Internal server error" });
     }
+    console.log(`Deleted ${result.affectedRows} rows from contacts table.`);
+    return res.json({ message: "Contact deleted successfully" });
   });
 });
-
 
 app.listen(3000, () => {
   console.log("Server started on port 3000");

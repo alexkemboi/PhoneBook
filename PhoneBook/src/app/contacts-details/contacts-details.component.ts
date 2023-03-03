@@ -32,7 +32,7 @@ for (let i = 0; i < data.length; i++) {
 
  // Create a new checkbox element and set its type to "checkbox"
  const checkbox = document.createElement("td");
- checkbox.innerHTML=`<input type="checkbox" class="form-control"/>`
+ checkbox.innerHTML=`<input type="checkbox" class="form-control" value="selected"/>`
 
  // Append the checkbox to the select cell
  
@@ -56,10 +56,12 @@ for (let i = 0; i < data.length; i++) {
   addressCell.textContent = contact.PhysicalAddress;
 
   const viewBtn = document.createElement("td");
+  viewBtn.addEventListener("click", handleClick);
   viewBtn.innerHTML = `<button class="form-control btn-info" id="viewBtn" (click)="handleClick()">View</button>`;
 
   const deleteBtn = document.createElement("td");
   deleteBtn.innerHTML = `<button class="form-control btn-danger">delete</button>`;
+  if(deleteBtn)deleteBtn.addEventListener("click",handleDeleteContact);
 
   const editBtn = document.createElement("td");
   editBtn.innerHTML = `<button class="form-control btn-success">Edit</button>`;
@@ -174,7 +176,7 @@ for (let i = 0; i < data.length; i++) {
 
  // Create a new checkbox element and set its type to "checkbox"
  const checkbox = document.createElement("td");
- checkbox.innerHTML=`<input type="checkbox"  class="form-control"/>`
+ checkbox.innerHTML=`<input type="checkbox"  class="form-control" value="selected"/>`
 
  // Append the checkbox to the select cell
  
@@ -199,7 +201,7 @@ for (let i = 0; i < data.length; i++) {
 
   const viewBtn = document.createElement("td");
   viewBtn.addEventListener("click", handleClick);
-  viewBtn.innerHTML = `<button class="form-control btn-info" id="viewBtn" >View</button>`;
+  viewBtn.innerHTML = `<button class="form-control btn-info" id="viewBtn" (click)="handleClick()" >View</button>`;
 
   const deleteBtn = document.createElement("td");
   deleteBtn.innerHTML = `<button class="form-control btn-danger" id="deleteBtn">delete</button>`;
@@ -231,31 +233,60 @@ for (let i = 0; i < data.length; i++) {
  
 }
 
+
+
+closeModal() {
+  const myModal=document.getElementById("myModal");
+  if(myModal)myModal.style.display = "none";
 }
-function handleClick(this: HTMLButtonElement): void {
+
+}
+function handleClick(this: HTMLButtonElement): void {  
+  const contact: (string | null)[]=[];
   const row = this.closest("tr");
   if (row) {
     const cells = row.querySelectorAll("td");
-    const contact: (string | null)[]=[];
     cells.forEach((cell: HTMLTableDataCellElement) =>contact.push(cell.textContent));
-    console.log(contact);
-    const modal = document.createElement("div");
-    modal.classList.add("modal");
-    modal.innerHTML = `
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <ul>
-          <li>contact</li>
-        </ul>
-      </div>
-    `;
-    const contactSection=document.getElementById("contactSection");
-    if (contactSection)contactSection.appendChild(modal);
-
-    // add event listener to close the modal when the close button is clicked
-    const closeBtn = modal.querySelector(".close");
-    closeBtn?.addEventListener("click", () => modal.remove());
     
   }
+  console.log(contact);
+  const modalContent=document.getElementById("modalContent");
+  const content=`<ul><h4 class="text-info">Contact</h4><li>${contact[1]} ${contact[2]}</li><li>${contact[3]}</li><li>${contact[4]}</li><li>${contact[6]}</li></ul>`
+  if(modalContent)modalContent.innerHTML=content;
+  openModal();
 }
 
+
+
+
+function openModal() {
+  const myModal=document.getElementById("myModal");
+  if(myModal)myModal.style.display = "block";
+}
+
+
+
+function handleDeleteContact(this: HTMLButtonElement): void {  
+  const contact: (string | null)[]=[];
+  const row = this.closest("tr");
+  if (row) {
+    const cells = row.querySelectorAll("td");
+    cells.forEach((cell: HTMLTableDataCellElement) =>contact.push(cell.textContent));
+    
+  }
+  console.log(contact[4]);
+
+  fetch(`/deleteContact?phoneNumber=${contact[4]}`, {
+    method: "DELETE"
+  })
+    .then((response) => response.json())
+    .then((res) => {
+      console.log(res);
+      console.log("Contact deleted successfully");
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  
+
+}

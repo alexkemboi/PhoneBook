@@ -240,6 +240,12 @@ closeModal() {
   if(myModal)myModal.style.display = "none";
 }
 
+closeDeleteModal() {
+  const myModal=document.getElementById("myDeleteModal");
+  if(myModal)myModal.style.display = "none";
+}
+
+
 }
 function handleClick(this: HTMLButtonElement): void {  
   const contact: (string | null)[]=[];
@@ -264,6 +270,10 @@ function openModal() {
   if(myModal)myModal.style.display = "block";
 }
 
+function openDeleteModal() {
+  const myModal=document.getElementById("myDeleteModal");
+  if(myModal)myModal.style.display = "block";
+}
 
 
 function handleDeleteContact(this: HTMLButtonElement): void {  
@@ -276,17 +286,21 @@ function handleDeleteContact(this: HTMLButtonElement): void {
   }
   console.log(contact[4]);
 
-  fetch(`/deleteContact?phoneNumber=${contact[4]}`, {
+  fetch(`http://localhost:3000/deleteContact?phoneNumber=${contact[4]}`, {
     method: "DELETE"
   })
     .then((response) => response.json())
     .then((res) => {
       console.log(res);
       console.log("Contact deleted successfully");
+      const deleteConfirmMessage='<h4>Contact deleted successfully</h4>';
+      const deleteMessage=document.getElementById("deleteMessage");
+      deleteMessage?deleteMessage.innerHTML=deleteConfirmMessage:"";
     })
     .catch((error) => {
       console.error(error);
     });
   
-
+    openDeleteModal();
+    
 }

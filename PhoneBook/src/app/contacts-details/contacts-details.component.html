@@ -85,11 +85,35 @@
       ></tbody>
     </table>
   </div>
+</div>
 
-  <div id="myModal" class="modal">
-    <div class="modal-content">
-      <span class="close" (click)="closeModal()">&times;</span>
-      <div id="modalContent"></div>
+<div id="myModal" class="modal" style="display: none">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <div class="card">
+      <div class="card-header">Contact</div>
     </div>
+    <div class="card-body"><div id="modalContent"></div></div>
+    <div class="card-footer">
+      <div class="row">
+        <div class="col-4">
+          <button class="form-control bg-danger text-white">Delete</button>
+        </div>
+        <div class="col-4">
+          <button class="form-control bg-success text-white">Edit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="myDeleteModal" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeDeleteModal()">&times;</span>
+    <div class="card"></div>
+    <div class="card-body">
+      <div id="deleteMessage" class="text-success text-center"></div>
+    </div>
+    <div class="card-footer"></div>
   </div>
 </div>

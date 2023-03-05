@@ -68,7 +68,6 @@ app.get("/searchContacts", (req, res) => {
   const phoneNumber = searchParams;
   console.log("Phone Number:", searchParams);
   const query = `SELECT * FROM contacts WHERE PhoneNumber=${phoneNumber}`;
-  console.log("Query:", query);
   db.query(query, (err, result) => {
     if (err) {
       console.error("Error selecting contacts from database: " + err.stack);
@@ -76,6 +75,21 @@ app.get("/searchContacts", (req, res) => {
       return;
     }
     console.log("Contact selected from database successfully:", result);
+    res.send(JSON.stringify(result));
+  });
+});
+
+// Handle DELETE request to /deleteContact
+app.delete("/deleteContact", (req, res) => {
+  const phoneNumber = req.query.phoneNumber;
+  // Delete contact from database
+  const sql = `DELETE FROM contacts WHERE PhoneNumber =${phoneNumber}`;
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+    console.log(`Deleted ${result.affectedRows} rows from contacts table.`);
     res.send(JSON.stringify(result));
   });
 });

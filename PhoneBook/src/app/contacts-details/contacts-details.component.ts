@@ -32,7 +32,7 @@ for (let i = 0; i < data.length; i++) {
 
  // Create a new checkbox element and set its type to "checkbox"
  const checkbox = document.createElement("td");
- checkbox.innerHTML=`<input type="checkbox" class="form-control"/>`
+ checkbox.innerHTML=`<input type="checkbox" class="form-control" value="selected"/>`
 
  // Append the checkbox to the select cell
  
@@ -56,10 +56,12 @@ for (let i = 0; i < data.length; i++) {
   addressCell.textContent = contact.PhysicalAddress;
 
   const viewBtn = document.createElement("td");
-  viewBtn.innerHTML = `<button class="form-control btn-info">View</button>`;
+  viewBtn.addEventListener("click", handleClick);
+  viewBtn.innerHTML = `<button class="form-control btn-info" id="viewBtn" (click)="handleClick()">View</button>`;
 
   const deleteBtn = document.createElement("td");
   deleteBtn.innerHTML = `<button class="form-control btn-danger">delete</button>`;
+  if(deleteBtn)deleteBtn.addEventListener("click",handleDeleteContact);
 
   const editBtn = document.createElement("td");
   editBtn.innerHTML = `<button class="form-control btn-success">Edit</button>`;
@@ -174,7 +176,7 @@ for (let i = 0; i < data.length; i++) {
 
  // Create a new checkbox element and set its type to "checkbox"
  const checkbox = document.createElement("td");
- checkbox.innerHTML=`<input type="checkbox"  class="form-control"/>`
+ checkbox.innerHTML=`<input type="checkbox"  class="form-control" value="selected"/>`
 
  // Append the checkbox to the select cell
  
@@ -198,13 +200,14 @@ for (let i = 0; i < data.length; i++) {
   addressCell.textContent = contact.PhysicalAddress;
 
   const viewBtn = document.createElement("td");
-  viewBtn.innerHTML = `<button class="form-control btn-info">View</button>`;
+  viewBtn.addEventListener("click", handleClick);
+  viewBtn.innerHTML = `<button class="form-control btn-info" id="viewBtn" (click)="handleClick()" >View</button>`;
 
   const deleteBtn = document.createElement("td");
-  deleteBtn.innerHTML = `<button class="form-control btn-danger">delete</button>`;
+  deleteBtn.innerHTML = `<button class="form-control btn-danger" id="deleteBtn">delete</button>`;
 
   const editBtn = document.createElement("td");
-  editBtn.innerHTML = `<button class="form-control btn-success">Edit</button>`;
+  editBtn.innerHTML = `<button class="form-control btn-success" id="editBtn">Edit</button>`;
 
   // Append the cells to the row element
   row.appendChild(checkbox);
@@ -221,28 +224,83 @@ for (let i = 0; i < data.length; i++) {
   // Append the row element to the table element
   
   searchResultsTable.appendChild(row);
-}
+ }
       })
       .catch(error => {
         console.error('Error:', error);
       });
-   };
-    
+   };   
  
-   
-  }
+}
 
 
-  getValue(id: number) {
-    console.log('ID:', id);
-  }
 
+closeModal() {
+  const myModal=document.getElementById("myModal");
+  if(myModal)myModal.style.display = "none";
+}
 
+closeDeleteModal() {
+  const myModal=document.getElementById("myDeleteModal");
+  if(myModal)myModal.style.display = "none";
+}
 
 
 }
-
- 
-
+function handleClick(this: HTMLButtonElement): void {  
+  const contact: (string | null)[]=[];
+  const row = this.closest("tr");
+  if (row) {
+    const cells = row.querySelectorAll("td");
+    cells.forEach((cell: HTMLTableDataCellElement) =>contact.push(cell.textContent));
     
+  }
+  console.log(contact);
+  const modalContent=document.getElementById("modalContent");
+  const content=`<ul><h4 class="text-info">Contact</h4><li>${contact[1]} ${contact[2]}</li><li>${contact[3]}</li><li>${contact[4]}</li><li>${contact[6]}</li></ul>`
+  if(modalContent)modalContent.innerHTML=content;
+  openModal();
+}
 
+
+
+
+function openModal() {
+  const myModal=document.getElementById("myModal");
+  if(myModal)myModal.style.display = "block";
+}
+
+function openDeleteModal() {
+  const myModal=document.getElementById("myDeleteModal");
+  if(myModal)myModal.style.display = "block";
+}
+
+
+function handleDeleteContact(this: HTMLButtonElement): void {  
+  const contact: (string | null)[]=[];
+  const row = this.closest("tr");
+  if (row) {
+    const cells = row.querySelectorAll("td");
+    cells.forEach((cell: HTMLTableDataCellElement) =>contact.push(cell.textContent));
+    
+  }
+  console.log(contact[4]);
+
+  fetch(`http://localhost:3000/deleteContact?phoneNumber=${contact[4]}`, {
+    method: "DELETE"
+  })
+    .then((response) => response.json())
+    .then((res) => {
+      console.log(res);
+      console.log("Contact deleted successfully");
+      const deleteConfirmMessage='<h4>Contact deleted successfully</h4>';
+      const deleteMessage=document.getElementById("deleteMessage");
+      deleteMessage?deleteMessage.innerHTML=deleteConfirmMessage:"";
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  
+    openDeleteModal();
+    
+}

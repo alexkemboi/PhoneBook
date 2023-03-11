@@ -8,6 +8,7 @@ import { FooterComponent } from './footer/footer.component';
 import { AddContactComponent } from './add-contact/add-contact.component';
 import { ContactsDetailsComponent } from './contacts-details/contacts-details.component';
 import { SearchContactComponent } from './search-contact/search-contact.component';
+import { EditContactComponent } from './edit-contact/edit-contact.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { SearchContactComponent } from './search-contact/search-contact.componen
     FooterComponent,
     AddContactComponent,
     ContactsDetailsComponent,
-    SearchContactComponent
+    SearchContactComponent,
+    EditContactComponent
   ],
   imports: [
     BrowserModule,

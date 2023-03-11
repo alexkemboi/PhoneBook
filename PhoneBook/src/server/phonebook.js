@@ -83,7 +83,11 @@ app.get("/searchContacts", (req, res) => {
 app.delete("/deleteContact", (req, res) => {
   const phoneNumber = req.query.phoneNumber;
   // Delete contact from database
-  const sql = `DELETE FROM contacts WHERE PhoneNumber =${phoneNumber}`;
+  console.log(phoneNumber);
+  const sqlq = `DELETE FROM contacts WHERE PhoneNumber =${phoneNumber}`;
+  const phoneNumbersToDelete = phoneNumber;
+  const sql = `DELETE FROM contacts WHERE PhoneNumber IN (${phoneNumbersToDelete})`;
+
   db.query(sql, (err, result) => {
     if (err) {
       console.error(err);

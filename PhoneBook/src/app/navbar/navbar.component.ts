@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ContactsDetailsComponent } from '../contacts-details/contacts-details.component';
 
 @Component({
   selector: 'app-navbar',
@@ -8,3 +9,7 @@ import { Component } from '@angular/core';
 export class NavbarComponent {
 
 }
+
+
+const contactDetailsComponent=new ContactsDetailsComponent();
+contactDetailsComponent.getContactsList();

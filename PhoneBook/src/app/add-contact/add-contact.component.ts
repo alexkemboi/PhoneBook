@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ContactsDetailsComponent } from '../contacts-details/contacts-details.component';
 
 @Component({
   selector: 'app-add-contact',
@@ -42,6 +43,9 @@ export class AddContactComponent {
   const addContactMessage=document.getElementById("addContactMessage") as HTMLElement;
   addContactMessage.innerHTML="Contact added succefully";
   
+    
+  const contactDetailsComponent=new ContactsDetailsComponent();
+  contactDetailsComponent.getContactsList();
   })
   .catch(error => console.error(error));
 

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { EditContactComponent } from '../edit-contact/edit-contact.component';
 
 @Component({
   selector: 'app-contacts-details',
@@ -6,6 +7,54 @@ import { Component } from '@angular/core';
   styleUrls: ['./contacts-details.component.css']
 })
 export class ContactsDetailsComponent {
+
+
+   deleteSelected(){  
+    const table = document.getElementById("tableData") as HTMLTableElement;
+    const rows = table.getElementsByTagName("tr") as HTMLCollectionOf<HTMLTableRowElement> | HTMLTableRowElement[];
+    const checkedRows: string[][] = [];
+  
+    for (let i = 0; i < rows.length; i++) {
+      const checkbox = rows[i].querySelector<HTMLInputElement>('input[type="checkbox"]');
+      if (checkbox && checkbox.checked) {
+        const cells = rows[i].getElementsByTagName("td");
+        const rowContent: string[] = [];
+        rowContent?rowContent.push(cells[4].textContent as string):"";
+        
+        checkedRows.push(rowContent);
+      }
+    }
+  
+    
+    if (checkedRows.length > 0) {
+      alert(`Checked rows:\n${JSON.stringify(checkedRows)}`);
+      console.log("cheched "+ checkedRows);      
+  fetch(`http://localhost:3000/deleteContact?phoneNumber=${checkedRows}`, {
+    method: "DELETE"
+  })
+    .then((response) => response.json())
+    .then((res) => {
+      console.log(res);
+      console.log("Contact deleted successfully");
+      const deleteConfirmMessage=`<h4>${checkedRows} Contact deleted successfully</h4>`;
+      const deleteMessage=document.getElementById("deleteMessage");
+      deleteMessage?deleteMessage.innerHTML=deleteConfirmMessage:"";
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  
+    openDeleteModal();
+
+    } else {
+      alert("No rows checked.");
+    }
+  }
+
+
+
+
+
      getContactsList(){
      fetch('http://localhost:3000/getContacts',{
         method: "get",
@@ -18,6 +67,7 @@ export class ContactsDetailsComponent {
     const listSection=document.getElementById("listSection")as HTMLElement;
     listSection.style.display="block";
     const contactlistSection=document.getElementById("contact-table")as HTMLTableElement;
+    contactlistSection.innerHTML="";
     const container = document.getElementById("contact-container") as HTMLElement; 
     container.style.display="none";
     const searchResultsSection=document.getElementById("searchResultsSection") as HTMLElement;
@@ -32,7 +82,7 @@ for (let i = 0; i < data.length; i++) {
 
  // Create a new checkbox element and set its type to "checkbox"
  const checkbox = document.createElement("td");
- checkbox.innerHTML=`<input type="checkbox" class="form-control" value="selected"/>`
+ checkbox.innerHTML=`<input type="checkbox" class="form-control" value="selected" id="checkboxBtn"/>`
 
  // Append the checkbox to the select cell
  
@@ -86,8 +136,6 @@ for (let i = 0; i < data.length; i++) {
     console.error('Error fetching data:', error);
   });
 }
-
-
 
   displayContactsGrid(){
 
@@ -176,7 +224,7 @@ for (let i = 0; i < data.length; i++) {
 
  // Create a new checkbox element and set its type to "checkbox"
  const checkbox = document.createElement("td");
- checkbox.innerHTML=`<input type="checkbox"  class="form-control" value="selected"/>`
+ checkbox.innerHTML=`<input type="checkbox"  class="form-control" value="selected" id="checkboxBtn"/>`
 
  // Append the checkbox to the select cell
  
@@ -206,8 +254,13 @@ for (let i = 0; i < data.length; i++) {
   const deleteBtn = document.createElement("td");
   deleteBtn.innerHTML = `<button class="form-control btn-danger" id="deleteBtn">delete</button>`;
 
+
+
+  const editContactComponent=new EditContactComponent();
+  const handleEditComponent=editContactComponent.handleUpdateContact;
   const editBtn = document.createElement("td");
-  editBtn.innerHTML = `<button class="form-control btn-success" id="editBtn">Edit</button>`;
+  editBtn.innerHTML = `<button class="form-control btn-success" id="editBtn" >Edit</button>`;
+  editBtn?editBtn.addEventListener("click",handleEditComponent):"";
 
   // Append the cells to the row element
   row.appendChild(checkbox);
@@ -284,7 +337,6 @@ function handleDeleteContact(this: HTMLButtonElement): void {
     cells.forEach((cell: HTMLTableDataCellElement) =>contact.push(cell.textContent));
     
   }
-  console.log(contact[4]);
 
   fetch(`http://localhost:3000/deleteContact?phoneNumber=${contact[4]}`, {
     method: "DELETE"

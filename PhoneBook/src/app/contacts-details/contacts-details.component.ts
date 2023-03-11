@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { EditContactComponent } from '../edit-contact/edit-contact.component';
 
 @Component({
   selector: 'app-contacts-details',
@@ -7,6 +6,53 @@ import { EditContactComponent } from '../edit-contact/edit-contact.component';
   styleUrls: ['./contacts-details.component.css']
 })
 export class ContactsDetailsComponent {
+
+
+
+
+  
+   updateContact = () => {
+  
+  const firstNameInput = document.getElementById("firstName") as HTMLInputElement;
+  const firstName=firstNameInput?firstNameInput.value:"";
+
+  const lastNameInput = document.getElementById("lastName") as HTMLInputElement;
+  const lastName=lastNameInput?lastNameInput.value:"";
+
+  const phoneNumberInput = document.getElementById("phoneNumber") as HTMLInputElement;
+  const phoneNumber=phoneNumberInput?phoneNumberInput.value:"";
+
+  const emailInput = document.getElementById("email") as HTMLInputElement; 
+  const email=emailInput?emailInput.value:"";
+
+  const addressInput = document.getElementById("address") as HTMLInputElement;
+  const address=addressInput?addressInput.value:"";
+
+  const imageNameInput = document.getElementById("image") as HTMLInputElement;
+  const imageName=imageNameInput?imageNameInput.value:"";
+  const updateData={FirstName:firstName,LastName:lastName,Email:email,PhoneNumber:phoneNumber,ContactImage:imageName,PhysicalAddress:address}
+  console.log(updateData);
+  fetch(`http://localhost:3000/UpdateContacts?PhoneNumber=${phoneNumber}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updateData),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+
+
+
+      const editConfirmMessage='<h4>Contact Updated successfully</h4>';
+      const editMessage=document.getElementById("editMessage");
+      editMessage?editMessage.innerHTML=editConfirmMessage:"";
+      const contactDetailsComponent=new ContactsDetailsComponent();
+  contactDetailsComponent.getContactsList();
+    })
+    .catch((err) => console.error(err));
+};
 
 
    deleteSelected(){  
@@ -39,6 +85,8 @@ export class ContactsDetailsComponent {
       const deleteConfirmMessage=`<h4>${checkedRows} Contact deleted successfully</h4>`;
       const deleteMessage=document.getElementById("deleteMessage");
       deleteMessage?deleteMessage.innerHTML=deleteConfirmMessage:"";
+      const contactDetailsComponent=new ContactsDetailsComponent();
+  contactDetailsComponent.getContactsList();
     })
     .catch((error) => {
       console.error(error);
@@ -114,7 +162,8 @@ for (let i = 0; i < data.length; i++) {
   if(deleteBtn)deleteBtn.addEventListener("click",handleDeleteContact);
 
   const editBtn = document.createElement("td");
-  editBtn.innerHTML = `<button class="form-control btn-success">Edit</button>`;
+  editBtn.innerHTML = `<button class="form-control btn-success" >Edit</button>`;
+  editBtn?editBtn.addEventListener("click",editContact):"";
 
   // Append the cells to the row element
   row.appendChild(checkbox);
@@ -165,24 +214,16 @@ data.forEach((contact: {
   FirstName: any; 
   LastName: any; 
 })=>{
- contactCard+=`    <div class="card m-3 col-6 m-auto">
-                    <div class="card-header text-center bg-dark">
-                          <image src="../favicon.ico"/>                          
-                    <h3 class="text-info"><b>${contact.FirstName} ${contact.LastName}</b></h3>
-                    </div>
-                    <div class="card-body">
-                    <h6>Email:${contact.Email}</h6>
-                    <h6>Phone:${contact.PhoneNumber}</h6>
-                    <h6>Address:${contact.PhysicalAddress}</h6>
-                    </div>
-                    <div class="card-footer">
-                    <div class="row">
-                    <div class="col-4"> <button class="form-control btn-danger">delete</button></div>
-                    <div class="col-4"><button class="form-control btn-success">Edit</button></div>
-                    <div class="col-4"><button class="form-control btn-info">View</button></div></div>
-                   
-                    
-                    </div>
+ contactCard+=`    <div class="card m-3 col-12 m-auto">
+                      <div class="card-header text-center bg-dark">
+                            <image src="../favicon.ico"/>                          
+                      <h3 class="text-info"><b>${contact.FirstName} ${contact.LastName}</b></h3>
+                      </div>
+                      <div class="card-body">
+                      <h6>Email:${contact.Email}</h6>
+                      <h6>Phone:${contact.PhoneNumber}</h6>
+                      <h6>Address:${contact.PhysicalAddress}</h6>
+                      </div>
                     </div>
                 `});
 // Append each card element to the container element in the DOM
@@ -255,12 +296,9 @@ for (let i = 0; i < data.length; i++) {
   deleteBtn.innerHTML = `<button class="form-control btn-danger" id="deleteBtn">delete</button>`;
 
 
-
-  const editContactComponent=new EditContactComponent();
-  const handleEditComponent=editContactComponent.handleUpdateContact;
   const editBtn = document.createElement("td");
-  editBtn.innerHTML = `<button class="form-control btn-success" id="editBtn" >Edit</button>`;
-  editBtn?editBtn.addEventListener("click",handleEditComponent):"";
+  editBtn.innerHTML = `<button class="form-control btn-success" id="editBtn" (click)="editContact()" >Edit</button>`;
+  
 
   // Append the cells to the row element
   row.appendChild(checkbox);
@@ -298,6 +336,10 @@ closeDeleteModal() {
   if(myModal)myModal.style.display = "none";
 }
 
+closeEditModal() {
+  const myModal=document.getElementById("editModal");
+  if(myModal)myModal.style.display = "none";
+}
 
 }
 function handleClick(this: HTMLButtonElement): void {  
@@ -327,7 +369,10 @@ function openDeleteModal() {
   const myModal=document.getElementById("myDeleteModal");
   if(myModal)myModal.style.display = "block";
 }
-
+function openEditModal() {
+  const myModal=document.getElementById("editModal");
+  if(myModal)myModal.style.display = "block";
+}
 
 function handleDeleteContact(this: HTMLButtonElement): void {  
   const contact: (string | null)[]=[];
@@ -348,6 +393,8 @@ function handleDeleteContact(this: HTMLButtonElement): void {
       const deleteConfirmMessage='<h4>Contact deleted successfully</h4>';
       const deleteMessage=document.getElementById("deleteMessage");
       deleteMessage?deleteMessage.innerHTML=deleteConfirmMessage:"";
+      const contactDetailsComponent=new ContactsDetailsComponent();
+  contactDetailsComponent.getContactsList();
     })
     .catch((error) => {
       console.error(error);
@@ -356,3 +403,54 @@ function handleDeleteContact(this: HTMLButtonElement): void {
     openDeleteModal();
     
 }
+
+
+
+
+function editContact(this: HTMLButtonElement): void {  
+  const contact: (string | null)[]=[];
+  const row = this.closest("tr");
+  if (row) {
+    const cells = row.querySelectorAll("td");
+    cells.forEach((cell: HTMLTableDataCellElement) =>contact.push(cell.textContent));
+    
+  }
+console.log(contact[4]);
+  fetch(`http://localhost:3000/searchContacts?phoneNumber=${contact[4]}`, {
+    method: "GET"
+  })
+    .then((response) => response.json())
+    .then((res) => {
+      console.log(res);
+      console.log("Contact selected successfully");
+      const firstName=document.getElementById("firstName") as HTMLInputElement;
+      firstName?firstName.value=res[0].FirstName:"";
+
+      const lastName=document.getElementById("lastName") as HTMLInputElement;
+      lastName?lastName.value=res[0].LastName:"";
+
+      const email=document.getElementById("email") as HTMLInputElement;
+      email?email.value=res[0].Email:"";
+
+      const PhoneNumber=document.getElementById("phoneNumber") as HTMLInputElement;
+      PhoneNumber?PhoneNumber.value=res[0].PhoneNumber:"";
+      
+
+      
+
+      const PhysicalAddress=document.getElementById("address") as HTMLInputElement;
+      PhysicalAddress?PhysicalAddress.value=res[0].PhysicalAddress:"";
+
+      const contactDetailsComponent=new ContactsDetailsComponent();
+  contactDetailsComponent.getContactsList();
+      
+
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  
+    openEditModal();
+    
+}
+

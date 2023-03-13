@@ -214,8 +214,8 @@ data.forEach((contact: {
   FirstName: any; 
   LastName: any; 
 })=>{
- contactCard+=`    <div class="card m-3 col-12 m-auto">
-                      <div class="card-header text-center bg-dark">
+ contactCard+=`    <div class="card  col-3 m-3">
+                      <div class="card-header text-center">
                             <image src="../favicon.ico"/>                          
                       <h3 class="text-info"><b>${contact.FirstName} ${contact.LastName}</b></h3>
                       </div>
@@ -226,8 +226,9 @@ data.forEach((contact: {
                       </div>
                     </div>
                 `});
-// Append each card element to the container element in the DOM
-if(container)container.innerHTML=contactCard;
+const gridContainer = document.getElementById("contact-gridContainer") as HTMLElement;
+// Append each card element to the gridContainer element in the DOM
+if(gridContainer)gridContainer.innerHTML=contactCard;
 }).catch(error => {
     console.error('Error fetching data:', error);
   });

@@ -16,7 +16,7 @@ import { SearchContactComponent } from './search-contact/search-contact.componen
     FooterComponent,
     AddContactComponent,
     ContactsDetailsComponent,
-    SearchContactComponent
+    SearchContactComponent,
   ],
   imports: [
     BrowserModule,

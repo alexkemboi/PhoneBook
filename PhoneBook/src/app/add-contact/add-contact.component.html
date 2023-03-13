@@ -1,7 +1,10 @@
 <div class="card container">
   <div class="card-header">
-    <i class="fas fa-plus fa-2x"></i>
-    <h4 class="card-title">Add contact</h4>
+    <div class="row">
+      <i class="fas fa-plus fa-2x"></i>
+      <h4 class="card-title">Add contact</h4>
+    </div>
+
     <div id="addContactMessage" class="text-center text-success"></div>
   </div>
   <div class="card-body">
@@ -30,21 +33,20 @@
         <label>Image</label>
         <input type="file" class="form-control" #imageName />
       </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
+      <div class="col-6">
         <label>Address</label>
         <input type="text" rows="3" class="form-control" #address />
       </div>
     </div>
-  </div>
-  <div class="card-footer">
-    <div class="row">
-      <div class="col-3">
+    <div class="row m-1">
+      <div class="col-12">
         <button class="bg-dark text-white form-control" (click)="addContact()">
           Save
         </button>
       </div>
     </div>
+  </div>
+  <div class="card-footer">
+    <div class="row"></div>
   </div>
 </div>

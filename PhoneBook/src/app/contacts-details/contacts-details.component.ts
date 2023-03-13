@@ -42,14 +42,11 @@ export class ContactsDetailsComponent {
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
-
-
-
       const editConfirmMessage='<h4>Contact Updated successfully</h4>';
       const editMessage=document.getElementById("editMessage");
       editMessage?editMessage.innerHTML=editConfirmMessage:"";
       const contactDetailsComponent=new ContactsDetailsComponent();
-  contactDetailsComponent.getContactsList();
+      contactDetailsComponent.getContactsList();
     })
     .catch((err) => console.error(err));
 };
@@ -146,6 +143,8 @@ for (let i = 0; i < data.length; i++) {
 
   const phoneCell = document.createElement("td");
   phoneCell.textContent = contact.PhoneNumber.toString();
+  phoneCell.style.color="blue";
+  phoneCell.style.fontWeight="bold";
 
   const imageCell = document.createElement("td");
   imageCell.textContent = contact.ContactImage;
@@ -154,8 +153,8 @@ for (let i = 0; i < data.length; i++) {
   addressCell.textContent = contact.PhysicalAddress;
 
   const viewBtn = document.createElement("td");
-  viewBtn.addEventListener("click", handleClick);
-  viewBtn.innerHTML = `<button class="form-control btn-info" id="viewBtn" (click)="handleClick()">View</button>`;
+  viewBtn.addEventListener("click", handleViewClick);
+  viewBtn.innerHTML = `<button class="form-control btn-info" id="viewBtn" (click)="handleViewClick()">View</button>`;
 
   const deleteBtn = document.createElement("td");
   deleteBtn.innerHTML = `<button class="form-control btn-danger">delete</button>`;
@@ -197,8 +196,7 @@ for (let i = 0; i < data.length; i++) {
   .then(response => response.json())
   .then((data) => {
   //display contacts as cards
- const container = document.getElementById("contact-container") as HTMLElement;
- container.innerHTML=""; 
+ const container = document.getElementById("contact-container") as HTMLElement; 
  container.style.display="block"; 
 const listSection = document.getElementById("listSection") as HTMLTableElement;
  listSection.style.display="none";
@@ -214,15 +212,17 @@ data.forEach((contact: {
   FirstName: any; 
   LastName: any; 
 })=>{
- contactCard+=`    <div class="card  col-3 m-3">
+ contactCard+=`    <div class="col-4">
+                      <div class="card ">                      
                       <div class="card-header text-center">
                             <image src="../favicon.ico"/>                          
-                      <h3 class="text-info"><b>${contact.FirstName} ${contact.LastName}</b></h3>
+                      <h5 class="text-info"><b>${contact.FirstName} ${contact.LastName}</b></h5>
                       </div>
                       <div class="card-body">
-                      <h6>Email:${contact.Email}</h6>
-                      <h6>Phone:${contact.PhoneNumber}</h6>
-                      <h6>Address:${contact.PhysicalAddress}</h6>
+                      <h8>Email:${contact.Email}</h8>
+                      <h8 class="text-info">Phone:${contact.PhoneNumber}</h8>
+                      <h8>Address:${contact.PhysicalAddress}</h8>
+                      </div>
                       </div>
                     </div>
                 `});
@@ -290,15 +290,17 @@ for (let i = 0; i < data.length; i++) {
   addressCell.textContent = contact.PhysicalAddress;
 
   const viewBtn = document.createElement("td");
-  viewBtn.addEventListener("click", handleClick);
-  viewBtn.innerHTML = `<button class="form-control btn-info" id="viewBtn" (click)="handleClick()" >View</button>`;
+  viewBtn.addEventListener("click", handleViewClick);
+  viewBtn.innerHTML = `<button class="form-control btn-info" id="viewBtn" (click)="handleViewClick()" >View</button>`;
 
-  const deleteBtn = document.createElement("td");
-  deleteBtn.innerHTML = `<button class="form-control btn-danger" id="deleteBtn">delete</button>`;
+  const searchDeleteBtn = document.createElement("td");
+  searchDeleteBtn.innerHTML = `<button class="form-control btn-danger" id="searchDeleteBtn">delete</button>`;
+  if(searchDeleteBtn)searchDeleteBtn.addEventListener("click",handleDeleteContact);
 
 
-  const editBtn = document.createElement("td");
-  editBtn.innerHTML = `<button class="form-control btn-success" id="editBtn" (click)="editContact()" >Edit</button>`;
+  const searchEditBtn = document.createElement("td");
+  searchEditBtn.innerHTML = `<button class="form-control btn-success" id="searchEditBtn"  >Edit</button>`;
+  searchEditBtn.addEventListener("click",editContact);
   
 
   // Append the cells to the row element
@@ -310,8 +312,8 @@ for (let i = 0; i < data.length; i++) {
   row.appendChild(imageCell);
   row.appendChild(addressCell);
   row.appendChild(viewBtn);
-  row.appendChild(editBtn);
-  row.appendChild(deleteBtn);
+  row.appendChild(searchEditBtn);
+  row.appendChild(searchDeleteBtn);
 
   // Append the row element to the table element
   
@@ -343,7 +345,7 @@ closeEditModal() {
 }
 
 }
-function handleClick(this: HTMLButtonElement): void {  
+function handleViewClick(this: HTMLButtonElement): void {  
   const contact: (string | null)[]=[];
   const row = this.closest("tr");
   if (row) {
@@ -353,7 +355,7 @@ function handleClick(this: HTMLButtonElement): void {
   }
   console.log(contact);
   const modalContent=document.getElementById("modalContent");
-  const content=`<ul><h4 class="text-info">Contact</h4><li>${contact[1]} ${contact[2]}</li><li>${contact[3]}</li><li>${contact[4]}</li><li>${contact[6]}</li></ul>`
+  const content=`<ul><li class="text-info"><h4>${contact[1]} ${contact[2]}</4></li><li>${contact[3]}</li><li>${contact[4]}</li><li>${contact[6]}</li></ul>`
   if(modalContent)modalContent.innerHTML=content;
   openModal();
 }

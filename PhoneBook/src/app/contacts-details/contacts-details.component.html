@@ -1,53 +1,59 @@
 <div>
- 
+      <div class="container" id="contactSection">
+        <div class="card ">
+          
+        <div class="card-header">
+          <div class="row">
+            
+            <div class="col-2">
+              
+                <a class="text-dark" href="#"
+                  ><i class="fas fa-address-book"></i> Contacts</a
+                >
+             
+            </div>
+            <div class="col-2">
+           
+                <a class="text-dark" href="#"><i class="fas fa-plus"></i> Add Contact</a>
+              
+            </div>
+            <div class="col-3">
+              <div class="row">
+                <div class="col-9">
+                  <select class="form-control">
+                    <option (click)="getContactsList()">List View</option>
+                    <option (click)="displayContactsGrid()">Grid View</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="row">
+                <div class="col-11">
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="search"
+                    id="searchContactInput"
+                  />
+                </div>
+                <div class="col-1">
+                  <i class="fas fa-search" (click)="searchContact()"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+   </div>
+    
   <div class="card-body container" id="listSection">
     <table
       id="tableData"
       class="table table-bordered table-striped table-hover"
     >
       <thead>
-        <tr>
-          <td colspan="10">
-            <div class="card container" id="contactSection">
-              <div class="card-header">
-                <div class="row">
-                  <div class="col-1">
-                    <i class="fas fa-address-book fa-2x"></i>
-                  </div>
-                  <div class="col-2">
-                    <h4>Contacts</h4>
-                  </div>
-                  <div class="col-3">
-                    <div class="row">
-                      <div class="col-3"><label>View</label></div>
-                      <div class="col-9">
-                        <select class="form-control">
-                          <option (click)="getContactsList()">List</option>
-                          <option (click)="displayContactsGrid()">Grid</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-6">
-                    <div class="row">
-                      <div class="col-11">
-                        <input
-                          class="form-control"
-                          type="text"
-                          placeholder="search"
-                          id="searchContactInput"
-                        />
-                      </div>
-                      <div class="col-1">
-                        <i class="fas fa-search fa-2x" (click)="searchContact()"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </td>
-        </tr>
+        
         <tr>
           <th>Select</th>
           <th>First Name</th>
@@ -80,12 +86,12 @@
     </table>
   </div>
   <!--Display grid-->
-  <div  class="container" id="contact-container">
+  <div  class="container" id="contact-container" style="display:block">
     <div class="card" >
       <div class="card-header">
         <h4 class="card-title">Contacts grid view</h4>
       </div>
-      <div class="card-body "> <div id="contact-gridContainer" class="d-flex row m-auto"></div></div>
+      <div class="card-body "> <div id="contact-gridContainer" class="d-flex row"></div></div>
     </div>
    
   </div>
@@ -120,7 +126,7 @@
   </div>
 </div>
 
-<div id="myModal" class="modal" style="display: none">
+<div id="myModal" class="modal">
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
     <div class="card">

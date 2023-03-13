@@ -83,7 +83,11 @@ app.get("/searchContacts", (req, res) => {
 app.delete("/deleteContact", (req, res) => {
   const phoneNumber = req.query.phoneNumber;
   // Delete contact from database
-  const sql = `DELETE FROM contacts WHERE PhoneNumber =${phoneNumber}`;
+  console.log(phoneNumber);
+  const sqlq = `DELETE FROM contacts WHERE PhoneNumber =${phoneNumber}`;
+  const phoneNumbersToDelete = phoneNumber;
+  const sql = `DELETE FROM contacts WHERE PhoneNumber IN (${phoneNumbersToDelete})`;
+
   db.query(sql, (err, result) => {
     if (err) {
       console.error(err);
@@ -92,6 +96,40 @@ app.delete("/deleteContact", (req, res) => {
     console.log(`Deleted ${result.affectedRows} rows from contacts table.`);
     res.send(JSON.stringify(result));
   });
+});
+
+app.put("/UpdateContacts", (req, res) => {
+  const {
+    FirstName,
+    LastName,
+    PhoneNumber,
+    Email,
+    ContactImage,
+    PhysicalAddress,
+  } = req.body;
+
+  const sql = `UPDATE contacts SET FirstName = ?, LastName = ?, PhoneNumber = ?, Email = ?, ContactImage = ?, PhysicalAddress = ? WHERE PhoneNumber = ?`;
+  db.query(
+    sql,
+    [
+      FirstName,
+      LastName,
+      PhoneNumber,
+      Email,
+      ContactImage,
+      PhysicalAddress,
+      PhoneNumber,
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Error updating contact in database: " + err.stack);
+        res.status(500).send("Error updating contact in database");
+        return;
+      }
+      console.log("Contact updated in database with id " + PhoneNumber);
+      res.send(result);
+    }
+  );
 });
 
 app.listen(3000, () => {

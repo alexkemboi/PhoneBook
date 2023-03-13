@@ -143,8 +143,10 @@ for (let i = 0; i < data.length; i++) {
 
   const phoneCell = document.createElement("td");
   phoneCell.textContent = contact.PhoneNumber.toString();
-  phoneCell.style.color="blue";
-  phoneCell.style.fontWeight="bold";
+  phoneCell.style.color="skyblue";
+  phoneCell.style.fontWeight="bold";  
+  phoneCell.style.fontSize="25px";  
+  phoneCell.style.backgroundColor="grey";
 
   const imageCell = document.createElement("td");
   imageCell.textContent = contact.ContactImage;

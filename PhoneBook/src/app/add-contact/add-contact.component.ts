@@ -10,6 +10,11 @@ import { ContactsDetailsComponent } from '../contacts-details/contacts-details.c
 
 
 export class AddContactComponent {
+  closeModal() {
+    const myAddContactModal=document.getElementById("myAddContactModal");
+    if(myAddContactModal)myAddContactModal.style.display = "none";
+  }
+
   @ViewChild('firstName')
   firstNameInput!: ElementRef;
   @ViewChild('lastName')
@@ -56,3 +61,4 @@ export class AddContactComponent {
   
 
 }
+

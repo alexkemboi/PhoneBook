@@ -9,6 +9,7 @@ import { AddContactComponent } from './add-contact/add-contact.component';
 import { ContactsDetailsComponent } from './contacts-details/contacts-details.component';
 import { SearchContactComponent } from './search-contact/search-contact.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +24,8 @@ import { SearchContactComponent } from './search-contact/search-contact.componen
     AppRoutingModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+ 
+  
 })
 export class AppModule { }

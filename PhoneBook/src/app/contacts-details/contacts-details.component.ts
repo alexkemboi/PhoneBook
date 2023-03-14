@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AddContactComponent } from '../add-contact/add-contact.component';
 
 @Component({
   selector: 'app-contacts-details',
@@ -6,11 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./contacts-details.component.css']
 })
 export class ContactsDetailsComponent {
-
-
-
-
-  
+      openAddContact(){
+       
+          const myAddContactModal=document.getElementById("myAddContactModal");
+          if(myAddContactModal)myAddContactModal.style.display = "block";
+        
+    }  
    updateContact = () => {
   
   const firstNameInput = document.getElementById("firstName") as HTMLInputElement;
